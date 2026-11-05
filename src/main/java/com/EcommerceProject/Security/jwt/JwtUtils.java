@@ -69,6 +69,7 @@ public ResponseCookie generateJwtCookie(UserDetailsImpl userPrincipal){
             .path("/api")
             .maxAge(24 *60*60)
             .httpOnly(false)
+            .secure(false) // true in case of production https
             .build();
     return cookie;
 }
