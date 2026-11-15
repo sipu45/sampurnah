@@ -2,9 +2,11 @@ package com.EcommerceProject.Controller;
 
 import com.EcommerceProject.Model.Cart;
 import com.EcommerceProject.Payload.CartDTO;
+import com.EcommerceProject.Payload.CartItemDTO;
 import com.EcommerceProject.Repositories.CartRepository;
 import com.EcommerceProject.Service.CartService;
 import com.EcommerceProject.Util.AuthUtil;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,11 +29,17 @@ public class CartController {
     private CartService cartService;
 
 
+    @PostMapping("/cart/create")
+    public ResponseEntity<String> createOrUpdateCart(@RequestBody List<CartItemDTO> cartItems) {
+         String response = cartService.createOrUpdateCartWithItems(cartItems);
+         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @PostMapping("/carts/products/{productId}/quantity/{quantity}")
     public ResponseEntity<CartDTO> addProductToCart(@PathVariable Long productId,
                                                     @PathVariable Integer quantity) {
-         CartDTO cartDTO = cartService.addProductToCart(productId,quantity);
-         return new ResponseEntity<CartDTO>(cartDTO, HttpStatus.OK);
+        CartDTO cartDTO = cartService.addProductToCart(productId,quantity);
+        return new ResponseEntity<CartDTO>(cartDTO, HttpStatus.OK);
     }
 
     @GetMapping("/carts")
